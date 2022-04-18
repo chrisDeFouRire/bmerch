@@ -1,0 +1,10 @@
+{
+  "name": "bmerch",
+  "version": "0.0.1",
+  "description": "Binance Merchant API for nodejs",
+  "main": "index.js",
+  "repository": "https://github.com/chrisDeFouRire/bmerch",
+  "author": "Chris Hartwig",
+  "license": "MIT",
+  "private": false
+}
