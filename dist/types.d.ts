@@ -1,4 +1,12 @@
 export declare type decimal = string;
+export interface BinancePayHeaders {
+    'BinancePay-Timestamp': string;
+    'BinancePay-Nonce': string;
+    'BinancePay-Signature': string;
+    'BinancePay-Certificate-SN': string;
+    'content-type': string;
+    [key: string]: string;
+}
 export interface Order {
     merchant?: {
         subMerchantId: string;
@@ -72,4 +80,13 @@ export interface Order_Response {
         deeplink: string;
         universalUrl: string;
     };
+}
+export interface GetCertificates_Response_Cert {
+    certPublic: string;
+    certSerial: string;
+}
+export interface GetCertificates_Response {
+    status: "SUCCESS" | "FAIL";
+    code: string;
+    data: Array<GetCertificates_Response_Cert>;
 }

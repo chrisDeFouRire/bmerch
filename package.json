@@ -2,7 +2,7 @@
   "name": "bmerch",
   "version": "0.0.3",
   "description": "Binance Pay Merchant API for nodejs",
-  "main": "index.js",
+  "main": "dist/index.js",
   "repository": "https://github.com/chrisDeFouRire/bmerch",
   "author": "Chris Hartwig",
   "license": "MIT",
