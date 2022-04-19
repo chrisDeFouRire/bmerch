@@ -1,10 +1,25 @@
 {
   "name": "bmerch",
   "version": "0.0.1",
-  "description": "Binance Merchant API for nodejs",
+  "description": "Binance Pay Merchant API for nodejs",
   "main": "index.js",
   "repository": "https://github.com/chrisDeFouRire/bmerch",
   "author": "Chris Hartwig",
   "license": "MIT",
-  "private": false
+  "private": false,
+  "dependencies": {
+    "axios": "^0.26.1"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^17.0.25",
+    "dotenv": "^16.0.0",
+    "typescript": "^4.6.3"
+  },
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "compile": "tsc --declaration",
+    "dev": "tsc -w --declaration",
+    "prepublish": "npm run compile"
+  }
 }
