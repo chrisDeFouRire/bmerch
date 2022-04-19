@@ -1,6 +1,6 @@
 {
   "name": "bmerch",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Binance Pay Merchant API for nodejs",
   "main": "index.js",
   "repository": "https://github.com/chrisDeFouRire/bmerch",
