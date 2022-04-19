@@ -4,7 +4,10 @@ I've found no lib for the Binance Pay Merchant API, so I'm creating one.
 
 All of this is very early access, so use at your own risk. 
 
-The createOrder api is probably the only one I'll implement as it's the one I need now. So feel free to submit pull requests to add more APIs! and issues if you have any.
+The createOrder api is probably the only one I'll implement as it's the one I need now. I'm also going to support receiving and authentifying 
+incoming webhook requests.
+
+Feel free to submit pull requests to add more APIs! and issues if you have any.
 
 This package was started for https://dojibar.com which is a Telegram bot to receive notification of your orders execution on Binance.
 
@@ -77,3 +80,17 @@ This would yield
 ```
 
 You can then use any of the URLs to send your customer to Binance to pay for the order.
+
+### Verify a Webhook signature
+
+It's a best practice to check signatures for incoming webhook requests for Binance Pay Merchant API.
+
+```js
+const headers = // headers of the webhook request
+const body = // json parsed body (ie. object) of the webhook request
+const isValid = await binanceMerch.isValidSignature(headers, body)
+```
+
+### TODO
+
+- [ ] Test it all in Dojibar.com
