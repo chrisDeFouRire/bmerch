@@ -20,6 +20,6 @@
   "scripts": {
     "compile": "tsc --declaration",
     "dev": "tsc -w --declaration",
-    "prepublish": "npm run compile"
+    "prepare": "npm run compile"
   }
 }

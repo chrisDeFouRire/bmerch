@@ -11,7 +11,7 @@ export class BinanceMerch {
 	private apikey: string
 	private apisecret: string
 	private client: AxiosInstance
-	private certificates?: Array<GetCertificates_Response_Cert>
+	private certificates?: Array<crypto.KeyObject>
 
 	/**
 	 * Constructor for the BinanceMerch API
@@ -45,7 +45,8 @@ export class BinanceMerch {
 		const ts = Date.now().toString()
 		let nonce = ''
 		for (let i = 0; i < 32; i++) {
-			nonce += allowednoncechars[Math.ceil(Math.random() * 52)]
+			const c = Math.ceil(Math.random() * 51)
+			nonce += allowednoncechars[c]
 		}
 
 		const payload = `${ts}\n${nonce}\n${JSON.stringify(body)}\n`
@@ -69,28 +70,23 @@ export class BinanceMerch {
 	 * @param body The body to check
 	 * @returns a promise for true if the signature is OK
 	 */
-	async isValidSignature(headers: BinancePayHeaders, body: any): Promise<boolean> {
-		const jsonBody = JSON.stringify(body)
+	async isValidSignature(headers: BinancePayHeaders, jsonBody: string): Promise<boolean> {
 		if (!this.certificates) {
 			const certs = await this.getCertificates()
 			if (certs.data.status != "SUCCESS") {
 				throw new Error("Binance Pay Merchant API couldn't get Certificates")
 			}
-			this.certificates = certs.data.data
-			if (!this.certificates) {
-				throw new Error("Can't find certificates for Binance Pay")
-			}
+			this.certificates = certs.data.data.map(pem => crypto.createPublicKey(pem.certPublic))
 		}
-		const payload = `${headers['BinancePay-Timestamp']}\n${headers['BinancePay-Nonce']}\n${jsonBody}\n`
-		const signature = Buffer.from(headers['BinancePay-Signature'], 'base64')
+		const payload = headers['binancepay-timestamp'] + "\n" + headers['binancepay-nonce'] + "\n" + jsonBody + "\n"
+		const signature = Buffer.from(headers['binancepay-signature'], 'base64')
 
-		function tryCertificate(certPublic: string) {
-			const publicKey = crypto.createPublicKey(certPublic) // TODO cache public key objects
+		function tryCertificate(publicKey: crypto.KeyObject) {
 			const v = crypto.createVerify('RSA-SHA256')
-			v.update(jsonBody)
-			return v.verify(publicKey, signature)
+			v.update(payload)
+			return v.verify(publicKey, signature )
 		}
-		const verified = this.certificates.find(cert => tryCertificate(cert.certPublic))
+		const verified = this.certificates.find(cert => tryCertificate(cert))
 
 		return verified != undefined
 	}
