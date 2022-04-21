@@ -2,7 +2,6 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import crypto from 'crypto'
 import { BinancePayHeaders, GetCertificates_Response, GetCertificates_Response_Cert, Order, Order_Response } from './types'
 export type { Order, Order_Response, BinancePayHeaders }
-
 const allowednoncechars = 'abcdefghijklmnopqrstuvwxyz' + 'abcdefghijklmnopqrstuvwxyz'.toUpperCase()
 
 const baseURL = 'https://bpay.binanceapi.com'
@@ -11,7 +10,9 @@ export class BinanceMerch {
 	private apikey: string
 	private apisecret: string
 	private client: AxiosInstance
-	private certificates?: Array<crypto.KeyObject>
+	private certificates?: {
+		[key: string]: crypto.KeyObject
+	}
 
 	/**
 	 * Constructor for the BinanceMerch API
@@ -70,24 +71,27 @@ export class BinanceMerch {
 	 * @param body The body to check
 	 * @returns a promise for true if the signature is OK
 	 */
-	async isValidSignature(headers: BinancePayHeaders, jsonBody: string): Promise<boolean> {
+	async isValidWebhookRequest(headers: BinancePayHeaders, jsonBody: string): Promise<boolean> {
 		if (!this.certificates) {
+			this.certificates = {}
 			const certs = await this.getCertificates()
 			if (certs.data.status != "SUCCESS") {
 				throw new Error("Binance Pay Merchant API couldn't get Certificates")
 			}
-			this.certificates = certs.data.data.map(pem => crypto.createPublicKey(pem.certPublic))
+			for (let cert of certs.data.data) {
+				this.certificates[cert.certSerial] = crypto.createPublicKey(cert.certPublic)
+			}
 		}
 		const payload = headers['binancepay-timestamp'] + "\n" + headers['binancepay-nonce'] + "\n" + jsonBody + "\n"
 		const signature = Buffer.from(headers['binancepay-signature'], 'base64')
 
-		function tryCertificate(publicKey: crypto.KeyObject) {
-			const v = crypto.createVerify('RSA-SHA256')
-			v.update(payload)
-			return v.verify(publicKey, signature )
+		const cert = this.certificates[headers['binancepay-certificate-sn']]
+		if (!cert) {
+			console.error("Can't find Binance cert with SN "+headers['binancepay-certificate-sn'])
+			return false
 		}
-		const verified = this.certificates.find(cert => tryCertificate(cert))
-
-		return verified != undefined
+		const v = crypto.createVerify('RSA-SHA256')
+		v.update(payload)
+		return v.verify(cert, signature)
 	}
 }
