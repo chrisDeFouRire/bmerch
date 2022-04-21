@@ -4,8 +4,6 @@ import { BinancePayHeaders, GetCertificates_Response, GetCertificates_Response_C
 export type { Order, Order_Response, BinancePayHeaders }
 const allowednoncechars = 'abcdefghijklmnopqrstuvwxyz' + 'abcdefghijklmnopqrstuvwxyz'.toUpperCase()
 
-const baseURL = 'https://bpay.binanceapi.com'
-
 export class BinanceMerch {
 	private apikey: string
 	private apisecret: string
@@ -20,10 +18,13 @@ export class BinanceMerch {
 	 * @param apisecret your Binance Merchant API secret
 	 * @param axiosConfig Optional parameters for Axios
 	 */
-	constructor(apikey: string, apisecret: string, axiosConfig?: AxiosRequestConfig) {
+	constructor(apikey: string, apisecret: string, axiosConfig: AxiosRequestConfig = {}) {
+		if (!axiosConfig.baseURL) {
+			axiosConfig.baseURL = 'https://bpay.binanceapi.com'
+		}
 		this.apikey = apikey
 		this.apisecret = apisecret
-		this.client = axios.create({ baseURL, ...axiosConfig })
+		this.client = axios.create(axiosConfig)
 	}
 
 	/**
@@ -58,10 +59,10 @@ export class BinanceMerch {
 
 		return {
 			'content-type': 'application/json',
-			'BinancePay-Timestamp': ts,
-			'BinancePay-Nonce': nonce,
-			'BinancePay-Certificate-SN': this.apikey,
-			'BinancePay-Signature': signature
+			'binancepay-timestamp': ts,
+			'binancepay-nonce': nonce,
+			'binancepay-certificate-sn': this.apikey,
+			'binancepay-signature': signature
 		}
 	}
 

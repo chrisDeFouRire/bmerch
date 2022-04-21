@@ -13,10 +13,10 @@ This package was started for https://dojibar.com which is a Telegram bot to rece
 
 ## Quickstart
 
-Simply install `bmerch` with :
+Install `bmerch` with :
 
 ```
-npm install bmerch
+$ npm install bmerch
 ```
 
 The only dependency is `Axios` which is used for HTTP requests.
@@ -29,7 +29,7 @@ import { BinanceMerch } from 'bmerch'
 const binanceMerch = new BinanceMerch(apikey, apisecret, { timeout: 5000 })
 ```
 
-The third parameter is an `AxiosRequestConfig` which you can use to pass any additional parameters to `Axios`, like this timeout.
+The third parameter is an `AxiosRequestConfig` which you can use to pass any additional parameters to `Axios`, like a timeout.
 
 ### Create a new Order
 
@@ -83,12 +83,20 @@ You can then use any of the URLs to send your customer to Binance to pay for the
 
 ### Verify a Webhook signature
 
-It's a best practice to check signatures for incoming webhook requests for Binance Pay Merchant API.
+You must check signatures of incoming webhook requests, to verify they come from Binance
 
 ```js
 const headers = // headers of the webhook request
-const body = // json parsed body (ie. object) of the webhook request
-const isValid = await binanceMerch.isValidSignature(headers, body)
+const body = // raw body of the webhook request (not parse json object)
+const isValid = await binanceMerch.isValidWebhookRequest(headers, body)
+```
+
+### To use with Binance.us
+
+You can specify the baseURL in the Axios options, if you don't want to use the standard api url.
+
+```js
+const binanceMerch = new BinanceMerch(apikey, apisecret, {baseURL: 'https://bpay.binanceapi.com', timeout: 5000 })
 ```
 
 ### TODO

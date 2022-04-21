@@ -27,5 +27,5 @@ export declare class BinanceMerch {
      * @param body The body to check
      * @returns a promise for true if the signature is OK
      */
-    isValidSignature(headers: BinancePayHeaders, body: any): Promise<boolean>;
+    isValidWebhookRequest(headers: BinancePayHeaders, jsonBody: string): Promise<boolean>;
 }

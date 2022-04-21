@@ -1,9 +1,9 @@
 export declare type decimal = string;
 export interface BinancePayHeaders {
-    'BinancePay-Timestamp': string;
-    'BinancePay-Nonce': string;
-    'BinancePay-Signature': string;
-    'BinancePay-Certificate-SN': string;
+    'binancepay-timestamp': string;
+    'binancepay-nonce': string;
+    'binancepay-signature': string;
+    'binancepay-certificate-sn': string;
     'content-type': string;
     [key: string]: string;
 }

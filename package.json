@@ -18,8 +18,7 @@
   },
   "types": "dist/index.d.ts",
   "scripts": {
-    "compile": "tsc --declaration",
     "dev": "tsc -w --declaration",
-    "prepare": "npm run compile"
+    "prepare": "tsc --declaration"
   }
 }
