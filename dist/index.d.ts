@@ -1,6 +1,6 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { BinancePayHeaders, GetCertificates_Response, Order, Order_Response } from './types';
-export type { Order, Order_Response, BinancePayHeaders };
+import { BinancePayHeaders, GetCertificates_Response, Order, Order_Response, BinanceWebhook, BinanceWebhookOrderNotification } from './types';
+export type { Order, Order_Response, BinancePayHeaders, BinanceWebhook, BinanceWebhookOrderNotification };
 export declare class BinanceMerch {
     private apikey;
     private apisecret;

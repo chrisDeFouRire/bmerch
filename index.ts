@@ -1,7 +1,9 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import crypto from 'crypto'
-import { BinancePayHeaders, GetCertificates_Response, GetCertificates_Response_Cert, Order, Order_Response } from './types'
-export type { Order, Order_Response, BinancePayHeaders }
+
+import { BinancePayHeaders, GetCertificates_Response, Order, Order_Response, BinanceWebhook, BinanceWebhookOrderNotification } from './types'
+export type { Order, Order_Response, BinancePayHeaders, BinanceWebhook, BinanceWebhookOrderNotification }
+
 const allowednoncechars = 'abcdefghijklmnopqrstuvwxyz' + 'abcdefghijklmnopqrstuvwxyz'.toUpperCase()
 
 export class BinanceMerch {

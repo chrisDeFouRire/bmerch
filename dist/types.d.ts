@@ -90,3 +90,32 @@ export interface GetCertificates_Response {
     code: string;
     data: Array<GetCertificates_Response_Cert>;
 }
+export interface BinanceWebhook {
+    bizType: string;
+    bizId: string;
+    bizStatus: "PAY_SUCCESS" | "PAY_CLOSED";
+    data: string;
+}
+export interface BinanceWebhookOrderNotification {
+    merchantTradeNo: string;
+    productType: string;
+    productName: string;
+    tradeType: "WEB" | "APP" | "WAP" | "MINI_PROGRAM" | "PAYMENT_LINK" | "OTHERS";
+    totalFee: string;
+    currency: string;
+    openUserId?: string;
+    payerInfo?: {
+        firstName: string;
+        middleName?: string;
+        lastName: string;
+        walletId: string;
+        country?: string;
+        city?: string;
+        address?: string;
+        identityType?: string;
+        identityNumber?: string;
+        dateOfBirth?: string;
+        placeOfBirth?: string;
+        nationality?: string;
+    };
+}
