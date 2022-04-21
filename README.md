@@ -62,7 +62,7 @@ console.log(result.data)
 
 This would yield
 
-```json
+```js
 {
     status: 'SUCCESS',
     code: '000000',
