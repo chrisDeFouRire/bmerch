@@ -98,9 +98,9 @@ export interface GetCertificates_Response {
 
 export interface BinanceWebhook {
 	bizType: string
-	bizId: string
+	bizId: number // the docs say string, the example shown in the docs is a number, and it's actually a number
 	bizStatus: "PAY_SUCCESS" | "PAY_CLOSED"
-	data: string
+	data: string // json serialized BinanceWebhookOrderNotification or something similar looking
 }
 
 export interface BinanceWebhookOrderNotification {

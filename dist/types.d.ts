@@ -92,7 +92,7 @@ export interface GetCertificates_Response {
 }
 export interface BinanceWebhook {
     bizType: string;
-    bizId: string;
+    bizId: number;
     bizStatus: "PAY_SUCCESS" | "PAY_CLOSED";
     data: string;
 }
